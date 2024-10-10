@@ -14,11 +14,30 @@ VPN_IP = args.VPN_IP  # Address to listen on
 VPN_PORT = args.VPN_port  # Port to listen on (non-privileged ports are > 1023)
 
 def parse_message(message):
-    message = message.decode("utf-8")
+    """
     # Parse the application-layer header into the destination SERVER_IP, destination SERVER_PORT,
     # and message to forward to that destination
-    raise NotImplementedError("Your job is to fill this function in. Remove this line when you're done.")
-    return SERVER_IP, SERVER_PORT, message
+
+    Args:
+    message (bytes): Message received from the client.
+
+    Returns:
+    tuple: (SERVER_IP, SERVER_PORT, message)
+    """
+    try:
+        message = message.decode("utf-8")
+        
+        # Split the message into parts, assuming the format is: "SERVER_IP SERVER_PORT message"
+        msg_sections = message.split(' ', 2)
+        SERVER_IP = msg_sections[0]
+        SERVER_PORT = int(msg_sections[1])
+        msg = msg_sections[2]
+        
+        return SERVER_IP, SERVER_PORT, msg
+    
+    except (IndexError, ValueError) as e:
+        raise ValueError(f"Failed to parse message. Please make sure it is in the correct format: \"SERVER_IP SERVER_PORT message\". Error: {e}")
+    
 
 ### INSTRUCTIONS ###
 # The VPN, like the server, must listen for connections from the client on IP address
@@ -31,3 +50,32 @@ def parse_message(message):
 
 # The VPN server must additionally print appropriate trace messages and send back to the
 # client appropriate error messages.
+print("VPN server starting - listening for connections at IP", VPN_IP, "and port", VPN_PORT)
+with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as vpn_socket:
+    vpn_socket.bind((VPN_IP, VPN_PORT))
+    vpn_socket.listen()
+
+    conn, addr = vpn_socket.accept()
+    with conn:
+        print(f"Connection established with {addr}")
+        while True:
+            data = conn.recv(1024)
+            if not data:
+                break
+            print(f"Received client message: '{data!r}' [{len(data)} bytes]")
+
+            # Parse the message
+            SERVER_IP, SERVER_PORT, message = parse_message(data)
+
+            # Establish connection to the server and send the message
+            print("VPN server connecting to destination server at IP", SERVER_IP, "and port", SERVER_PORT)
+            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+                s.connect((SERVER_IP, SERVER_PORT))
+                print(f"connection established, sending message '{message}'")
+                s.sendall(bytes(message, 'utf-8'))
+                print("message forwarded, waiting for reply")
+                reply = s.recv(1024).decode("utf-8")
+                print(f"Received server response: '{data}' [{len(data)} bytes]")
+                print("sending reply back to client")
+                conn.sendall(reply.encode("utf-8"))
+    print("VPN is done!")
