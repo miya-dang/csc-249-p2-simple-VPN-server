@@ -75,7 +75,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as vpn_socket:
                 s.sendall(bytes(message, 'utf-8'))
                 print("message forwarded, waiting for reply")
                 reply = s.recv(1024).decode("utf-8")
-                print(f"Received server response: '{data}' [{len(data)} bytes]")
+                print(f"Received server response: '{reply}' [{len(reply)} bytes]")
                 print("sending reply back to client")
                 conn.sendall(reply.encode("utf-8"))
     print("VPN is done!")
