@@ -21,4 +21,4 @@ Example: "127.0.0.1 8080 Hello, server!"
 
 Format: The exact response as received by the destination server.
 
-Example: If the destination server sends the message "Hello, server!", the message is returned exactly to the client: "Hello, server!".
+Example: If the destination server sends the message "Hello world!", the message is returned exactly to the client: "Hello world!".
