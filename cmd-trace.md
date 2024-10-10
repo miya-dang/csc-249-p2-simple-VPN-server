@@ -30,7 +30,7 @@ connection established, sending message 'Hello, world'
 
 message forwarded, waiting for reply
 
-Received server response: 'b'127.0.0.1 65432 Hello, world'' [28 bytes]
+Received server response: 'Hello, world' [12 bytes]
 
 sending reply back to client
 
