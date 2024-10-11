@@ -1,16 +1,15 @@
-**Client Trace**
+**Echo Server Trace**
+% python3 echo-server.py
 
-% python3 client.py
+server starting - listening for connections at IP 127.0.0.1 and port 65432
 
-client starting - connecting to VPN at IP 127.0.0.1 and port 55554
+Connection established with ('127.0.0.1', 62841)
 
-connection established, sending message '127.0.0.1 65432 Hello, world'
+Received client message: 'b'Hello, world'' [12 bytes]
 
-message sent, waiting for reply
+echoing 'b'Hello, world'' back to client
 
-Received response: 'Hello, world' [12 bytes]
-
-client is done!
+server is done!
 
 
 
@@ -37,15 +36,18 @@ sending reply back to client
 VPN is done!
 
 
-**Echo Server Trace**
-% python3 echo-server.py
 
-server starting - listening for connections at IP 127.0.0.1 and port 65432
+**Client Trace**
 
-Connection established with ('127.0.0.1', 62841)
+% python3 client.py
 
-Received client message: 'b'Hello, world'' [12 bytes]
+client starting - connecting to VPN at IP 127.0.0.1 and port 55554
 
-echoing 'b'Hello, world'' back to client
+connection established, sending message '127.0.0.1 65432 Hello, world'
 
-server is done!
+message sent, waiting for reply
+
+Received response: 'Hello, world' [12 bytes]
+
+client is done!
+
