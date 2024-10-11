@@ -1,4 +1,5 @@
 **Echo Server Trace**
+
 % python3 echo-server.py
 
 server starting - listening for connections at IP 127.0.0.1 and port 65432
