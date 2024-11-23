@@ -72,4 +72,4 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
             print(f"Received server response: '{reply!r}' [{len(reply)} bytes]")
             print("sending reply back to client")
             conn.sendall(reply)
-    print("VPN is done!")
+print("VPN is done!")
